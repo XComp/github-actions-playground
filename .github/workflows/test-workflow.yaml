@@ -34,7 +34,7 @@ jobs:
 
           Commit SHA: ${GITHUB_SHA}
           Registry: ${{ steps.tags.outputs.registry }}/branches
-          Docker tag: $BRANCH
+          Docker tag: ${E_VARIABLE_STEP_LEVEL}
           Test suite: ${{ matrix.test }}
           Overwritten Environment Variables: ${{ github.event.inputs.overwrite_env }}
           EOF
