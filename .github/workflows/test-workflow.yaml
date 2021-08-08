@@ -32,7 +32,7 @@ jobs:
           E2E Test Run Parameters
           =======================
 
-          Commit SHA: ${{ github.sha }}
+          Commit SHA: ${GITHUB_SHA}
           Registry: ${{ steps.tags.outputs.registry }}/branches
           Docker tag: $BRANCH
           Test suite: ${{ matrix.test }}
