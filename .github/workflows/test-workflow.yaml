@@ -19,10 +19,8 @@ jobs:
           env
 
       - name: Set variable through normal bash
-        if: ${{ always() }}
-        run: echo "Setting the varable within the steps"
-        env:
-          E_VARIABLE_STEP_LEVEL: "value #2"
+        run: |
+          echo "E_VARIABLE_STEP_LEVEL=value #2" >> $GITHUB_ENV
 
       - name: Show environment variables - 2nd step
         run: |
