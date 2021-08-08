@@ -12,7 +12,7 @@ jobs:
   test-workflow:
     runs-on: ubuntu-latest
     env:
-      E_VARIABLE_JOB_LEVEL: ${{ GITHUB_REF }}
+      E_VARIABLE_JOB_LEVEL: ${{ github.ref }}
     steps:
       - name: Show environment variables - 1st step
         run: |
