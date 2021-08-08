@@ -17,7 +17,7 @@ jobs:
           env
 
       - name: Set variable through normal bash
-        run: BRANCH=${{ github.head_ref }}
+        run: export BRANCH="Test value"
 
       - name: Show environment variables - 2nd step
         run: |
