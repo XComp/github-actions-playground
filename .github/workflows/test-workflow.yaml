@@ -11,13 +11,18 @@ on:
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
+    env:
+      E_VARIABLE_JOB_LEVEL: "value #1"
     steps:
       - name: Show environment variables - 1st step
         run: |
           env
 
       - name: Set variable through normal bash
-        run: export BRANCH="Test value"
+        if: ${{ always() }}
+        run: echo "Setting the varable within the steps"
+        env:
+          E_VARIABLE_STEP_LEVEL: "value #2"
 
       - name: Show environment variables - 2nd step
         run: |
