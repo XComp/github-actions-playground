@@ -1,0 +1,24 @@
+name: "The for setting the variable"
+
+on:
+  pull_request: ~
+  workflow_dispatch:
+    inputs:
+      overwrite_env:
+        description: 'Overwrite Environment Variables'
+        required: false
+
+jobs:
+  test-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Show environment variables - 1st step
+        run: |
+          env
+
+      - name: Set variable through normal bash
+        run: BRANCH=${{ github.head_ref }}
+
+      - name: Show environment variables - 2nd step
+        run: |
+          env
