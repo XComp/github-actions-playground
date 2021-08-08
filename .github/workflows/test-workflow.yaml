@@ -25,3 +25,16 @@ jobs:
       - name: Show environment variables - 2nd step
         run: |
           env
+
+      - name: Print selective environment variables
+        run: |
+          cat << EOF
+          E2E Test Run Parameters
+          =======================
+
+          Commit SHA: ${{ github.sha }}
+          Registry: ${{ steps.tags.outputs.registry }}/branches
+          Docker tag: $BRANCH
+          Test suite: ${{ matrix.test }}
+          Overwritten Environment Variables: ${{ github.event.inputs.overwrite_env }}
+          EOF
