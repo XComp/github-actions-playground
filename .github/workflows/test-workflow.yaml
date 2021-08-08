@@ -20,7 +20,7 @@ jobs:
 
       - name: Set variable through normal bash
         run: |
-          echo "E_VARIABLE_STEP_LEVEL=value #2" >> $GITHUB_ENV
+          echo "E_VARIABLE_STEP_LEVEL=${{ github.head_ref }}" >> $GITHUB_ENV
 
       - name: Show environment variables - 2nd step
         run: |
