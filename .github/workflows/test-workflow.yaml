@@ -11,6 +11,7 @@ on:
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.overwrite_env == '' }}
     env:
       E_VARIABLE_JOB_LEVEL: ${{ github.head_ref }}
     steps:
