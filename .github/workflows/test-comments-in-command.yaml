@@ -19,6 +19,6 @@ jobs:
       - name: Set variable through normal bash
         run: |
           echo "That's a test text that generates test data." | grep \
-            # this comment shouldn't produce any issues
+            # this comment shouldn't produce any issues \
             -o \
             'te[a-zA-Z]*'
