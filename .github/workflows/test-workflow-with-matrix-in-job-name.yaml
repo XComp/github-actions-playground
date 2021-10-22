@@ -18,4 +18,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Step 1 of ${{ env.STREAM_VERSION }} and ${{ env.SPRING_VERSION }}'
-        run: echo "Stream version: $STREAM_VERSION" && echo "Spring version: $SPRING_VERSION"
+        run: |
+          echo "Stream version: $STREAM_VERSION"
+          echo "Spring version: $SPRING_VERSION"
