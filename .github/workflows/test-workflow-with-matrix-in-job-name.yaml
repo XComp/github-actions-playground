@@ -11,8 +11,8 @@ on:
 
 jobs:
   env:
-    - STREAM_VERSION: ${{ github.event.inputs.flinkVersion }}-stream${{ github.event.inputs.streamVersion }}
-    - SPRING_VERSION: ${{ github.event.inputs.flinkVersion }}-spring${{ github.event.inputs.streamVersion }}
+    STREAM_VERSION: ${{ github.event.inputs.flinkVersion }}-stream${{ github.event.inputs.streamVersion }}
+    SPRING_VERSION: ${{ github.event.inputs.flinkVersion }}-spring${{ github.event.inputs.streamVersion }}
   test-workflow:
     name: 'Test workflow for ${{ env.STREAM_VERSION }} and ${{ env.SPRING_VERSION }}'
     runs-on: ubuntu-latest
