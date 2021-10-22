@@ -1,4 +1,4 @@
-name: "The for setting the variable"
+name: "Test for accessing the matrix parameter"
 
 on:
   pull_request: ~
