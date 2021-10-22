@@ -14,7 +14,7 @@ env:
 
 jobs:
   test-workflow:
-    name: 'Test workflow for ${{ env.STREAM_VERSION }} and ${{ env.SPRING_VERSION }}'
+    name: 'Test workflow for ???'
     runs-on: ubuntu-latest
     steps:
       - name: 'Step 1 of ${{ env.STREAM_VERSION }} and ${{ env.SPRING_VERSION }}'
