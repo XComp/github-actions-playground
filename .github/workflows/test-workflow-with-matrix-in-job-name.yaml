@@ -1,0 +1,20 @@
+name: "The for setting the variable"
+
+on:
+  pull_request: ~
+  workflow_dispatch:
+    inputs:
+      overwrite_env:
+        description: 'Overwrite Environment Variables'
+        required: false
+
+jobs:
+  test-workflow:
+    name: 'Test workflow with matrix parameter ${{ matrix.version }}'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: ["foo", "bar"]
+    steps:
+      - name: 'Step 1 of matrix parameter ${{ matrix.version }}'
+        run: echo ${{ matrix.version }}
