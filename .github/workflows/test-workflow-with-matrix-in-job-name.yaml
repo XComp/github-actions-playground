@@ -4,17 +4,18 @@ on:
   pull_request: ~
   workflow_dispatch:
     inputs:
-      overwrite_env:
-        description: 'Overwrite Environment Variables'
-        required: false
+      flinkVersion:
+        description: 'Flink Version'
+      streamVersion:
+        description: 'Stream Version'
 
 jobs:
+  env:
+    - STREAM_VERSION: ${{ github.event.inputs.flinkVersion }}-stream${{ github.event.inputs.streamVersion }}
+    - SPRING_VERSION: ${{ github.event.inputs.flinkVersion }}-spring${{ github.event.inputs.streamVersion }}
   test-workflow:
-    name: 'Test workflow with matrix parameter ${{ matrix.version }}'
+    name: 'Test workflow for ${{ env.STREAM_VERSION }} and ${{ env.SPRING_VERSION }}'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        version: ["foo", "bar"]
     steps:
-      - name: 'Step 1 of matrix parameter ${{ matrix.version }}'
-        run: echo ${{ matrix.version }}
+      - name: 'Step 1 of ${{ env.STREAM_VERSION }} and ${{ env.SPRING_VERSION }}'
+        run: echo "Stream version: $STREAM_VERSION" && echo "Spring version: $SPRING_VERSION"
