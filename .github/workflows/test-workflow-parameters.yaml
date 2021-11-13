@@ -1,0 +1,30 @@
+name: "Accesses all inputs at once"
+
+on:
+  workflow_dispatch:
+    inputs:
+      a:
+        description: 'Variable a (number)' 
+        required: true
+      b:
+        description: 'Variable b (string)'
+        required: true
+
+jobs:
+  workflow-parameters:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Print"
+        run: "echo ${{ github.event.inputs.a }} ${{ github.event.inputs.b }}"
+      - name: "Check ${{ github.event.inputs.a }}"
+        if: always()
+        run: echo ${{ github.event.inputs.a }} | grep "[0-9]\+"
+      - name: "Check ${{ github.event.inputs.b }}"
+        if: always()
+        run: echo ${{ github.event.inputs.b }} | grep "[a-z]\+"
+  execute:
+    runs-on: ubuntu-latest
+    needs: workflow-parameters
+    steps:
+      - name: "Execute job"
+        run: echo "Execute with parameters:${{ github.event.inputs }}"
