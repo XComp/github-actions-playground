@@ -5,7 +5,6 @@ on:
     inputs:
       a:
         description: 'Variable a (number)' 
-        required: true
       b:
         description: 'Variable b (string)'
         required: true
