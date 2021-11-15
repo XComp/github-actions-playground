@@ -17,7 +17,7 @@ jobs:
       - name: "Print"
         run: "echo ${{ github.event.inputs.a }} ${{ github.event.inputs.b }}"
       - name: "Check ${{ github.event.inputs.a }}"
-        if: always()
+        if: always() && github.event.inputs.a != ''
         run: echo ${{ github.event.inputs.a }} | grep "[0-9]\+"
       - name: "Check ${{ github.event.inputs.b }}"
         if: always()
