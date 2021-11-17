@@ -10,7 +10,6 @@ on:
 
 env:
   FOO: "bar"
-  OTHER: "${{ env.FOO }}"
 
 jobs:
   test-workflow:
@@ -20,6 +19,8 @@ jobs:
       E_VARIABLE_JOB_LEVEL: ${{ github.head_ref }}
     steps:
       - name: Show environment variables - 1st step
+        env:
+          OTHER: "${{ env.FOO }}"
         run: |
           env
 
