@@ -8,6 +8,10 @@ on:
         description: 'Overwrite Environment Variables'
         required: false
 
+env:
+  FOO: "bar"
+  OTHER: "${{ env.FOO }}"
+
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
