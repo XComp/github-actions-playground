@@ -15,7 +15,9 @@ jobs:
         run: echo "::set-output name=FOOBAR::Blablubb"
 
       - name: Print output variable
-        run: echo "${{ steps.set-output.outputs.FOOBAR }}"
+        env:
+          MIGRATED_FOOBAR: ${{ steps.set-output.outputs.FOOBAR }}
+        run: env
 
       - name: Prints environment variables
         run: env
