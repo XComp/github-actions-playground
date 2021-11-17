@@ -1,0 +1,17 @@
+name: "The workflow for setting the environment variable"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prints environment variables
+        run: env
+
+      - name: Exports environment variable
+        run: export FOOBAR="That's awesome"
+
+      - name: Prints environment variables
+        run: env
