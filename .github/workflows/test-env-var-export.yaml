@@ -11,7 +11,7 @@ jobs:
         run: env
 
       - name: Exports environment variable
-        run: export FOOBAR="That's awesome"
+        run: echo "::set-output name=FOOBAR::Blablubb"
 
       - name: Prints environment variables
         run: env
