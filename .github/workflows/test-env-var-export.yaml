@@ -11,7 +11,11 @@ jobs:
         run: env
 
       - name: Exports environment variable
+        id: set-output
         run: echo "::set-output name=FOOBAR::Blablubb"
+
+      - name: Print output variable
+        run: echo "${{ steps.set-output.outputs.FOOBAR }}"
 
       - name: Prints environment variables
         run: env
