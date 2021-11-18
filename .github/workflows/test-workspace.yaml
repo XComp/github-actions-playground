@@ -8,12 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Prints workspace"
-        run: echo ${{ github.workspace }}
+        run: |
+          echo ${{ github.workspace }}
+          find .
 
       - uses: actions/checkout@v2
 
       - name: "Prints workspace"
-        run: echo ${{ github.workspace }}
+        run: |
+          echo ${{ github.workspace }}
+          find .
 
       - name: Show environment variables - 2nd step
         run: |
