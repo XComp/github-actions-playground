@@ -7,11 +7,12 @@ jobs:
   test-workflow:
     runs-on: ubuntu-latest
     steps:
-      - name: Show environment variables - 1st step
-        run: |
-          env
+      - name: "Prints workspace"
+        run: echo ${{ github.workspace }}
 
-      - name: Prints workspace variable
+      - uses: actions/checkout@v2
+
+      - name: "Prints workspace"
         run: echo ${{ github.workspace }}
 
       - name: Show environment variables - 2nd step
