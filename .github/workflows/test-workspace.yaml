@@ -4,24 +4,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-workflow:
+  stringify:
+    name: "Stringify"
     runs-on: ubuntu-latest
+    outputs:
+      stringified-workflow-name: ${{ steps.workflow-prep-step.stringified-workflow-name }}
     steps:
-      - name: "Prints workspace"
+      - name: "Stringify workflow name"
+        id: workflow-prep-step
         run: |
-          echo ${{ github.workflow }}
+          stringified_workflow_name=$(echo "${{ github.workflow }}" | tr -C '[:alnum:]._' '-' |  tr '[:upper:]' '[:lower:]' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g')
+          echo "::set-output name=stringified-workflow-name::${stringified_workflow_name}"
 
-      - name: "Prints workflow name #2"
-        run: |
-          echo ${{ env.GITHUB_WORKFLOW }}
-
-      - name: "Prints workflow name hyphenized #1"
-        run: |
-          echo ${{ github.workflow }} | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g'
-
-      - name: "Prints workflow name hyphenized #2"
-        run: |
-          echo $GITHUB_WORKFLOW | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g'
-
-      - name: "Show environment variables"
-        run: env
+  test:
+    name: "Use stringified version"
+    needs: stringify
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Upload build artifacts"
+        run: echo logs-test-${{ needs.stringify.outputs.stringified-workflow-name }}-${{ github.run_number }}
