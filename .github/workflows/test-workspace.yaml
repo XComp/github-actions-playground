@@ -8,7 +8,7 @@ jobs:
     name: "Stringify"
     runs-on: ubuntu-latest
     outputs:
-      stringified-workflow-name: ${{ steps.workflow-prep-step.stringified-workflow-name }}
+      stringified-workflow-name: ${{ steps.workflow-prep-step.outputs.stringified-workflow-name }}
     steps:
       - name: "Stringify workflow name"
         id: workflow-prep-step
