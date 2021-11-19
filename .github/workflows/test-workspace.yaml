@@ -25,4 +25,4 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: "Upload build artifacts"
-        run: echo logs-test-${{ needs.stringify.outputs.stringified-workflow-name }}-${{ github.run_number }}
+        run: echo "logs-test-${{ needs.stringify.outputs.stringified-workflow-name }}-${{ github.run_number }}"
