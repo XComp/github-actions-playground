@@ -3,24 +3,27 @@ name: "Workspace test"
 on:
   workflow_dispatch:
 
+env:
+  HYPHIZED_WORKFLOW_NAME: ${{ env.GITHUB_WORKFLOW | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g' }}
+
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
     steps:
       - name: "Prints workspace"
         run: |
-          echo ${{ github.workspace }}
-          find .
+          echo ${{ github.workflow }}
 
-      - uses: actions/checkout@v2
-        with:
-          path: "checkout"
-
-      - name: "Prints workspace"
+      - name: "Prints workflow name #2"
         run: |
-          echo ${{ github.workspace }}
-          find .
+          echo ${{ env.GITHUB_WORKFLOW }}
 
-      - name: Show environment variables - 2nd step
+      - name: "Prints workflow name hyphenized #1"
         run: |
-          env
+          echo ${{ github.workflow }} | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g'
+
+      - name: "Prints workflow name hyphenized #2"
+        run: echo ${{ env.HYPHENIZED_WORKFLOW_NAME }}
+
+      - name: "Show environment variables"
+        run: env
