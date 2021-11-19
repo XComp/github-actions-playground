@@ -17,7 +17,7 @@ jobs:
           echo ${stringified_workflow_name}
           echo "::set-output name=stringified-workflow-name::${stringified_workflow_name}"
       - name: "Stringify workflow name"
-        run: echo ${{ steps.workflow-prep-step.stringified-workflow-name }}
+        run: echo ${{ steps.workflow-prep-step.outputs.stringified-workflow-name }}
 
   test:
     name: "Use stringified version"
