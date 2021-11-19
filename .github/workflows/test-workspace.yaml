@@ -3,9 +3,6 @@ name: "Workspace test"
 on:
   workflow_dispatch:
 
-env:
-  HYPHIZED_WORKFLOW_NAME: ${{ env.GITHUB_WORKFLOW | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g' }}
-
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
@@ -23,7 +20,8 @@ jobs:
           echo ${{ github.workflow }} | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g'
 
       - name: "Prints workflow name hyphenized #2"
-        run: echo ${{ env.HYPHENIZED_WORKFLOW_NAME }}
+        run: |
+          echo $GITHUB_WORKFLOW | tr -C '[:alnum:]._' '-' | sed -e 's/--*/-/g' -e 's/^-*//g' -e 's/-*$//g'
 
       - name: "Show environment variables"
         run: env
