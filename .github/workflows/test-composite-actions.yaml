@@ -13,5 +13,9 @@ jobs:
           path: ${{ github.workspace }}/checkout
 
       - uses: ${{ github.workspace }}/.github/actions/test-action
+        id: composite-step
         with:
           who-to-greet: Matthias
+
+      - name: "Prints output"
+        run: echo ${{ steps.composite-step.outputs.random-number }}
