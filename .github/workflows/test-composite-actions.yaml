@@ -12,6 +12,6 @@ jobs:
         with:
           path: ${{ github.workspace }}/checkout
 
-      - uses: ./checkout/.github/actions/test-action
+      - uses: ${{ github.workspace }}/.github/actions/test-action
         with:
           who-to-greet: Matthias
