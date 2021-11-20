@@ -1,0 +1,17 @@
+name: "Test Composite Actions"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: "Test Composite Actions Job"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          path: ${{ github.workspace }}/checkout
+
+      - uses: ./checkout/.github/actions/test-action
+        with:
+          who-to-greet: Matthias
