@@ -3,6 +3,9 @@ name: "Test Composite Actions"
 on:
   workflow_dispatch:
 
+env:
+  CHECKOUT_DIR: ./checkout
+
 jobs:
   test:
     name: "Test Composite Actions Job"
@@ -10,10 +13,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          path: ${{ github.workspace }}/checkout
+          path: ${{ env.CHECKOUT_DIR }}
 
       - name: "Runs Composite Action"
-        uses: ./checkout/.github/actions/test-action
+        uses: ${{ env.CHECKOUT_DIR }}/.github/actions/test-action
         id: composite-step
         with:
           who-to-greet: Matthias
