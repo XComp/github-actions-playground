@@ -1,5 +1,7 @@
 ### Pull Request Checklist
 
+That's the PR template
+
 * [ ] test 1
 * [ ] test 2
 
