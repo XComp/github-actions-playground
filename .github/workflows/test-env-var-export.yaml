@@ -2,22 +2,23 @@ name: "The workflow for setting the environment variable"
 
 on:
   workflow_dispatch:
+    flinkVersion:
+        description: 'The Flink version the VVP Flink version is based on (e.g. 1.13.3 for 1.13.3-stream1 or 1.14.0 for 1.14.0-stream2)'
+        required: true
+
+env:
+  FOOBAR_TAG: '${{ github.event.inputs.flinkVersion }}-foobar'
 
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
     steps:
-      - name: Prints environment variables
-        run: env
+      - name: Checkout #1
+        uses: actions/checkout@v2
+        with:
+          path: $FOOBAR_TAG
 
-      - name: Exports environment variable
-        id: set-output
-        run: echo "::set-output name=FOOBAR::Blablubb"
-
-      - name: Print output variable
-        env:
-          MIGRATED_FOOBAR: ${{ steps.set-output.outputs.FOOBAR }}
-        run: env
-
-      - name: Prints environment variables
-        run: env
+      - name: Checkout #2
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.FOOBAR_TAG }}
