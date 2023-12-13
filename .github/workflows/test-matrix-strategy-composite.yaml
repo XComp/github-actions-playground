@@ -49,13 +49,16 @@ jobs:
         include:
           - jdk-version: 11
             system-variables: "-Djdk11 -Pjava11-target"
-            should-be-triggered: ${{ contains( ${{ inputs.jdk-versions }}, 11) }}
+            should-be-triggered:
+            - ${{ contains( ${{ inputs.jdk-versions }}, 11) }}
           - jdk-version: 17
             system-variables: "-Djdk11 -Djdk17 -Pjava17-target"
-            should-be-triggered: ${{ contains( ${{ inputs.jdk-versions }}, 17) }}
+            should-be-triggered:
+            - ${{ contains( ${{ inputs.jdk-versions }}, 17) }}
           - jdk-version: 21
             system-variables: "-Djdk11 -Djdk17 -Djdk21 -Pjava21-target"
-            should-be-triggered: ${{ contains( ${{ inputs.jdk-versions }}, 21) }}
+            should-be-triggered:
+            - ${{ contains( ${{ inputs.jdk-versions }}, 21) }}
     name: "Java ${{ matrix.jdk-version }}"
     runs-on: "ubuntu-latest"
     steps:
