@@ -26,7 +26,7 @@ on:
       jdk-versions:
         description: "The non-default JDK versions that shall be supported."
         type: string
-        default: "11 17 21"
+        default: ""
 
 permissions: read-all
 
