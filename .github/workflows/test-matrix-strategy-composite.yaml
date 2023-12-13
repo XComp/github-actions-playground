@@ -48,7 +48,7 @@ jobs:
       configs: ${{ steps.select-configs.outputs.configs }}
     steps:
       - name: "Selects JDK configurations"
-        id: select-jdk-setups
+        id: select-configs-setups
         shell: bash
         run: |
           # the matrix configuration has to be dynamically generated like that because GitHub's 
