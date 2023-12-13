@@ -41,18 +41,20 @@ on:
 permissions: read-all
 
 jobs:
-  select-matrix:
-    name: "Selects JDK setups"
+  configure-jdk-workflows:
+    name: "Configures JDK workflows"
     runs-on: "ubuntu-latest"
     outputs:
-      matrix: ${{ steps.select-jdk-setups.outputs.matrix }}
+      configs: ${{ steps.select-configs.outputs.configs }}
     steps:
       - name: "Selects JDK configurations"
         id: select-jdk-setups
         shell: bash
         run: |
-          configs_json='matrix={"include":['
-  
+          # the matrix configuration has to be dynamically generated like that because GitHub's 
+          # matrix strategy doesn't allow filtering of matrix entries for now
+          configs_json='configs={"include":['
+
           # we have to set the default version here to handle the comma-separation properly for 
           # the additional JDKs within the JSON
           echo "Adds JDK 8 configuration as the default configuration."
@@ -66,7 +68,7 @@ jobs:
           )
 
           for jdk_version in "${!other_configs[@]}"; do
-            if [[ "${{ inputs.jdk-versions }}" =~ .*$jdk_version.* ]]; then
+            if [[ "${{ inputs.supported-jdk-versions }}" =~ .*$jdk_version.* ]] || [[ "${{ github.event_name }}" == "schedule" ]]; then
               echo "Additional configuration for JDK ${jdk_version} added."
               configs_json=$configs_json',{"jdk-version": '$jdk_version', "system-variables": "'${other_configs["$jdk_version"]}'"}'
             fi
@@ -74,11 +76,11 @@ jobs:
           configs_json=$configs_json']}'
 
           echo "$configs_json" >> $GITHUB_OUTPUT
-  jdk-runs:
-    needs: select-matrix
+  jdk-workflows:
+    needs: configure-jdk-workflows
     strategy:
-      matrix: ${{ fromJSON(needs.select-matrix.outputs.matrix) }}
-    name: "Java ${{ matrix.jdk-version }}"
+      matrix: ${{ fromJSON(needs.configure-jdk-workflows.outputs.configs) }}
+    name: "Java ${{ matrix.jdk-version }} (with Hadoop 2.10.2)"
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
     with:
       jdk-version: ${{ matrix.jdk-version }}
