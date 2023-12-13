@@ -47,7 +47,8 @@ jobs:
     outputs:
       matrix: ${{ steps.select-jdk-setups.outputs.matrix }}
     steps:
-      - id: select-jdk-setups
+      - name: "Selects JDK configurations"
+        id: select-jdk-setups
         shell: bash
         run: |
           configs_json='matrix={"include":['
