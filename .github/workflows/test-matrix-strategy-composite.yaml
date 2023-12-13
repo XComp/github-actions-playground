@@ -25,7 +25,7 @@ on:
         description: "The branch the extended CI run should be executed on."
         type: string
         required: true
-      jdk-versions:
+      supported-jdk-versions:
         description: "The non-default JDK versions that shall be supported."
         type: string
   workflow_dispatch:
@@ -34,7 +34,7 @@ on:
         description: "The branch the extended workflow should run on."
         default: "master"
         type: string
-      jdk-versions:
+      supported-jdk-versions:
         description: "The non-default JDK versions that shall be supported."
         type: string
 
