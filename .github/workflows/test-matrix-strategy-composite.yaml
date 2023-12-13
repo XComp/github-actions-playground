@@ -50,19 +50,26 @@ jobs:
       - id: select-jdk-setups
         shell: bash
         run: |
-          json='matrix={"include":[{"jdk-version": 8, "system-variables": ""}'
-          if [[ "${{ inputs.jdk-versions }}" =~ .*11.* ]]; then
-            json=$json',{"jdk-version": 11, "system-variables": "-Djdk11"}'
-          elif [[ "${{ inputs.jdk-versions }}" =~ .*17.* ]]; then
-            json=$json',{"jdk-version": 17, "system-variables": "-Djdk17"},'
-          elif [[ "${{ inputs.jdk-versions }}" =~ .*21.* ]]; then
-            json=$json',{"jdk-version": 21, "system-variables": "-Djdk21"},'
-          fi
-          json=$json']}'
-          
-          echo $json
-          
-          echo "$json" >> $GITHUB_OUTPUT
+          configs_json='matrix={"include":['
+  
+          echo "Adds JDK 8 configuration as the default configuration."
+          configs_json=$configs_json'{"jdk-version": 8, "system-variables": ""}'
+
+          declare -A other_configs
+          other_configs=( \
+              ["11"]="-Djdk11 -Pjava11-target" \
+              ["17"]="-Djdk11 -Djdk17 -Pjava17-target" \
+              ["21"]="-Djdk11 -Djdk17 -Djdk21 -Pjava21-target" \
+          )
+
+          for jdk_version in "${!other_configs[@]}"; do
+          if [[ "${{ inputs.jdk-versions }}" =~ .*$jdk_version.* ]]; then
+            echo "Additional configuration for JDK ${jdk_version} added."
+            configs_json=$configs_json',{"jdk-version": '$jdk_version', "system-variables": "'${other_configs["$jdk_version"]}'"}'
+          done
+          configs_json=$configs_json']}'
+
+          echo "$configs_json" >> $GITHUB_OUTPUT
   jdk-runs:
     needs: select-matrix
     strategy:
