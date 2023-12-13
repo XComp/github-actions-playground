@@ -74,6 +74,8 @@ jobs:
             fi
           done
           configs_json=$configs_json']}'
+          
+          echo $configs_json
 
           echo "$configs_json" >> $GITHUB_OUTPUT
   jdk-workflows:
