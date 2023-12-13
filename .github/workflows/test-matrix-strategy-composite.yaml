@@ -51,11 +51,11 @@ jobs:
         shell: bash
         run: |
           json='matrix={"include":[{"jdk-version": 8, "system-variables": ""}'
-          if [[ ${{ inputs.jdk-versions }} ~= .*11.* ]]; then
+          if [[ "${{ inputs.jdk-versions }}" ~= .*11.* ]]; then
             json=$json',{"jdk-version": 11, "system-variables": "-Djdk11"}'
-          elif [[ ${{ inputs.jdk-versions }} ~= .*17.* ]]; then
+          elif [[ "${{ inputs.jdk-versions }}" ~= .*17.* ]]; then
             json=$json',{"jdk-version": 17, "system-variables": "-Djdk17"},'
-          elif [[ ${{ inputs.jdk-versions }} ~= .*21.* ]]; then
+          elif [[ "${{ inputs.jdk-versions }}" ~= .*21.* ]]; then
             json=$json',{"jdk-version": 21, "system-variables": "-Djdk21"},'
           fi
           json=$json']}'
