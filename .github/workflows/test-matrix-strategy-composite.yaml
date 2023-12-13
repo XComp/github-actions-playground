@@ -45,7 +45,7 @@ jobs:
     name: "Configures JDK workflows"
     runs-on: "ubuntu-latest"
     outputs:
-      configs: ${{ steps.select-configs.outputs.configs }}
+      configs: ${{ steps.select-configs-setups.outputs.configs }}
     steps:
       - name: "Selects JDK configurations"
         id: select-configs-setups
