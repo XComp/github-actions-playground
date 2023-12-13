@@ -79,9 +79,7 @@ jobs:
     strategy:
       matrix: ${{ fromJSON(needs.select-matrix.outputs.matrix) }}
     name: "Java ${{ matrix.jdk-version }}"
-    runs-on: "ubuntu-latest"
-    steps:
-      - name: "Print variables"
-        run: |
-          echo "JDK version: ${{ matrix.jdk-version }}"
-          echo "Variables: ${{ matrix.system-variables }}"
+    uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
+    with:
+      jdk-version: ${{ matrix.jdk-version }}
+      params: ${{ matrix.system-variables }}
