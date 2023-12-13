@@ -1,0 +1,65 @@
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# This workflow is meant as an extended CI run that includes certain features that shall be tested
+# and JDK versions that are supported but not considered default.
+
+name: "Composite"
+
+on:
+  workflow_call:
+    inputs:
+      branch:
+        description: "The branch the extended CI run should be executed on."
+        type: string
+        required: true
+      jdk-versions:
+        description: "The non-default JDK versions that shall be supported."
+        type: string
+        default: "11 17 21"
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "The branch the extended workflow should run on."
+        default: "master"
+        type: string
+      jdk-versions:
+        description: "The non-default JDK versions that shall be supported."
+        type: string
+        default: "11 17 21"
+
+permissions: read-all
+
+jobs:
+  other-jdks:
+    strategy:
+      matrix:
+        include:
+          - jdk-version: 11
+            system-variables: "-Djdk11 -Pjava11-target"
+            should-be-triggered: ${{ contains( ${{ inputs.jdk-versions }}, 11) }}
+          - jdk-version: 17
+            system-variables: "-Djdk11 -Djdk17 -Pjava17-target"
+            should-be-triggered: ${{ contains( ${{ inputs.jdk-versions }}, 17) }}
+          - jdk-version: 21
+            system-variables: "-Djdk11 -Djdk17 -Djdk21 -Pjava21-target"
+            should-be-triggered: ${{ contains( ${{ inputs.jdk-versions }}, 21) }}
+    name: "Java ${{ matrix.jdk-version }}"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Print variables"
+        run: |
+          echo "JDK version: ${{ matrix.jdk-version }}"
+          echo "System variables: ${{ matrix.system-variables }}"
