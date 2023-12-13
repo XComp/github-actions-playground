@@ -47,7 +47,8 @@ jobs:
     strategy:
       matrix:
         jdk-version: [11, 17, 21]
-        should-be-triggered: ${{ contains(inputs.jdk-versions, 11) }}
+        should-be-triggered:
+          - ${{ contains(inputs.jdk-versions, matrix.jdk-version) }}
         include:
           - jdk-version: 11
             system-variables: "-Djdk11 -Pjava11-target"
