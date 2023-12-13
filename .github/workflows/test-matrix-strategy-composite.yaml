@@ -48,6 +48,7 @@ jobs:
       matrix: ${{ steps.select-jdk-setups.outputs.matrix }}
     steps:
       - id: select-jdk-setups
+        shell: bash
         run: |
           json='matrix={"include":[{"jdk-version": 8, "system-variables": ""}'
           if [[ ${{ inputs.jdk-versions }} ~= .*11.* ]]; then
@@ -58,6 +59,8 @@ jobs:
             json=$json',{"jdk-version": 21, "system-variables": "-Djdk21"},'
           fi
           json=$json']}'
+          
+          echo $json
           
           echo "$json" >> $GITHUB_OUTPUT
   jdk-runs:
