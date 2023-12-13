@@ -28,7 +28,6 @@ on:
       jdk-versions:
         description: "The non-default JDK versions that shall be supported."
         type: string
-        default: "11 17 21"
   workflow_dispatch:
     inputs:
       branch:
@@ -38,32 +37,37 @@ on:
       jdk-versions:
         description: "The non-default JDK versions that shall be supported."
         type: string
-        default: "11 17 21"
 
 permissions: read-all
 
 jobs:
-  java11:
-    name: "Java 11"
+  select-matrix:
+    name: "Selects JDK setups"
     runs-on: "ubuntu-latest"
-    if: ${{ contains(inputs.jdk-versions, 11) }}
+    outputs:
+      matrix: ${{ steps.select-jdk-setups.outputs.matrix }}
+    steps:
+      - id: select-jdk-setups
+        run: |
+          json='matrix={"include":[{"jdk-version": 8, "system-variables": ""}'
+          if [[ ${{ inputs.jdk-versions }} ~= .*11.* ]]; then
+            json=$json',{"jdk-version": 11, "system-variables": "-Djdk11"}'
+          elif [[ ${{ inputs.jdk-versions }} ~= .*17.* ]]; then
+            json=$json',{"jdk-version": 17, "system-variables": "-Djdk17"},'
+          elif [[ ${{ inputs.jdk-versions }} ~= .*21.* ]]; then
+            json=$json',{"jdk-version": 21, "system-variables": "-Djdk21"},'
+          fi
+          json=$json']}'
+          
+          echo "$json" >> $GITHUB_OUTPUT
+  jdk-runs:
+    needs: select-matrix
+    strategy:
+      matrix: ${{ fromJSON(needs.select-matrix.outputs.matrix) }}
+    name: "Java ${{ matrix.jdk-version }}"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Print variables"
         run: |
-          echo "JDK version: 11"
-  java17:
-    name: "Java 17"
-    runs-on: "ubuntu-latest"
-    if: ${{ contains(inputs.jdk-versions, 17) }}
-    steps:
-      - name: "Print variables"
-        run: |
-          echo "JDK version: 17"
-  java21:
-    name: "Java 21"
-    runs-on: "ubuntu-latest"
-    if: ${{ contains(inputs.jdk-versions, 21) }}
-    steps:
-      - name: "Print variables"
-        run: |
-          echo "JDK version: 21"
+          echo "JDK version: ${{ matrix.jdk-version }}"
+          echo "Variables: ${{ matrix.system-variables }}"
