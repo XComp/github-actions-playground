@@ -47,6 +47,11 @@ jobs:
     outputs:
       configs: ${{ steps.generate-workflow-configs.outputs.configs }}
     steps:
+      - name: "Flink Checkout"
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+          persist-credentials: false
       - name: "Generate workflow configurations"
         id: generate-workflow-configs
         shell: bash
