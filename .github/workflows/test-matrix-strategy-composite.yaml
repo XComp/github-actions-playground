@@ -56,7 +56,15 @@ jobs:
         id: generate-workflow-configs
         shell: bash
         run: |
-          echo "configs=$(cat ./.github/workflows/flink-workflow-config.default.json | paste -sd' ')" >> $GITHUB_OUTPUT
+          placeholder="%%CONFIG_PROFILE%%"
+          path_pattern="./.github/workflows/flink-workflow-config.$placeholder.json"
+          
+          config_file_path=$(echo "$path_pattern" | sed "s/$placeholder/${{ inputs.branch }}/g")
+          if [ ! -f $config_file_path ]; then
+            config_file_path=$(echo "$path_pattern" | sed "s/$placeholder/default/g")
+          fi
+            
+          echo "configs=$(cat ${config_file_path} | paste -sd' ')" >> $GITHUB_OUTPUT
   flink-workflows:
     needs: generate-workflow-configs
     strategy:
