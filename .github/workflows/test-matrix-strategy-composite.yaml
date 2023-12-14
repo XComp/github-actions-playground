@@ -51,7 +51,7 @@ jobs:
         id: generate-workflow-configs
         shell: bash
         run: |
-          ls .
+          find .
           echo "configs=$(cat ./.github/workflows/flink-workflow-config.default.json)" >> $GITHUB_OUTPUT
   flink-workflows:
     needs: generate-workflow-configs
