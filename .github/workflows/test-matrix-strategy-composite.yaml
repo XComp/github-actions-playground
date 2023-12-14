@@ -65,7 +65,7 @@ jobs:
               record_sep=","
             fi
 
-            echo ${1}${record_sep}'{"calling-workflow-id": "'$2'", "calling-workflow-name": "'$3'", "jdk-version": "'$4'", "env-params": "'$5'"}'
+            echo ${1}${record_sep}'{"calling-workflow-id": "'$2'", "calling-workflow-name": "'$3'", "jdk-version": '$4', "env-params": "'$5'"}'
           }
           
           # initialize JSON version of matrix strategy
