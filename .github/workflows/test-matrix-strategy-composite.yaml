@@ -102,7 +102,7 @@ jobs:
   flink-workflows:
     needs: generate-workflow-configs
     strategy:
-      matrix: ${{ fromJSON(needs.configure-jdk-workflows.outputs.configs) }}
+      matrix: ${{ fromJSON(needs.generate-workflow-configs.outputs.configs) }}
       fail-fast: false
     name: "${{ matrix.calling-workflow-name }} (ID: ${{ matrix.calling-workflow-id }})"
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
