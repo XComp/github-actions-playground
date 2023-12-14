@@ -21,7 +21,11 @@ on:
   workflow_call:
     inputs:
       calling-workflow-id:
+        description: "ID"
+        type: string
       calling-workflow-name:
+        description: "Name"
+        type: string
       jdk-version:
         description: "The Java version to use."
         type: number
