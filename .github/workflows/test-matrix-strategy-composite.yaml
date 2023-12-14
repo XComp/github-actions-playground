@@ -60,12 +60,12 @@ jobs:
 
             local record_sep
             record_sep=""
-            if [[ "$json" =~ .*calling-workflow-id.* ]]; then
+            if [[ "$1" =~ .*calling-workflow-id.* ]]; then
               # there's already at least one entry which is why we have to set the separator
-              record_set=""
+              record_sep=","
             fi
 
-            echo ${json}${record_sep}'{"calling-workflow-id": "'$2'", "calling-workflow-name": "'$3'", "jdk-version": "'$4'", "env-params": "'$5'"}'
+            echo ${1}${record_sep}'{"calling-workflow-id": "'$2'", "calling-workflow-name": "'$3'", "jdk-version": "'$4'", "env-params": "'$5'"}'
           }
           
           # initialize JSON version of matrix strategy
