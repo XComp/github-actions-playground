@@ -85,7 +85,7 @@ jobs:
           for jdk_version in "${!jdk_configs[@]}"; do
             if [[ "${{ inputs.supported-jdk-versions }}" =~ .*$jdk_version.* ]] || [[ "${{ github.event_name }}" == "schedule" ]]; then
               echo "Additional configuration for JDK ${jdk_version} added."
-              workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "java${jdk_version}" "Java ${jdk_version}" ${jdk_version} "${other_configs["$jdk_version"]}")"
+              workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "java${jdk_version}" "Java ${jdk_version}" ${jdk_version} "${jdk_configs["$jdk_version"]}")"
             fi
           done
           
@@ -96,9 +96,9 @@ jobs:
           # wrap things up
           workflow_config_json=$workflow_config_json']}'
           
-          echo $configs_json
+          echo $workflow_config_json
 
-          echo "$configs_json" >> $GITHUB_OUTPUT
+          echo "$workflow_config_json" >> $GITHUB_OUTPUT
   flink-workflows:
     needs: generate-workflow-configs
     strategy:
