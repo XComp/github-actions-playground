@@ -41,7 +41,7 @@ on:
 permissions: read-all
 
 jobs:
-  generate-workflows-configs:
+  generate-workflow-configs:
     name: "Configures Flink workflows"
     runs-on: "ubuntu-latest"
     outputs:
