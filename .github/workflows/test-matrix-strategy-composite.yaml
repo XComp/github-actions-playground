@@ -82,6 +82,7 @@ jobs:
     needs: configure-jdk-workflows
     strategy:
       matrix: ${{ fromJSON(needs.configure-jdk-workflows.outputs.configs) }}
+      fail-fast: false
     name: "Java ${{ matrix.jdk-version }} (with Hadoop 2.10.2)"
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
     with:
