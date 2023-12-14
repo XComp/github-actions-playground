@@ -80,6 +80,7 @@ jobs:
           echo "$configs_json" >> $GITHUB_OUTPUT
   jdk-workflows:
     needs: configure-jdk-workflows
+    if: ${{ always() }}
     strategy:
       matrix: ${{ fromJSON(needs.configure-jdk-workflows.outputs.configs) }}
     name: "Java ${{ matrix.jdk-version }} (with Hadoop 2.10.2)"
