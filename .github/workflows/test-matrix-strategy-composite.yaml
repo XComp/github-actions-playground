@@ -41,50 +41,71 @@ on:
 permissions: read-all
 
 jobs:
-  configure-jdk-workflows:
-    name: "Configures JDK workflows"
+  generate-workflows-configs:
+    name: "Configures Flink workflows"
     runs-on: "ubuntu-latest"
     outputs:
-      configs: ${{ steps.select-configs-setups.outputs.configs }}
+      configs: ${{ steps.generate-workflow-configs.outputs.configs }}
     steps:
-      - name: "Selects JDK configurations"
-        id: select-configs-setups
+      - name: "Generate workflow configurations"
+        id: generate-workflow-configs
         shell: bash
         run: |
-          # the matrix configuration has to be dynamically generated like that because GitHub's 
-          # matrix strategy doesn't allow filtering of matrix entries for now
-          configs_json='configs={"include":['
+          function add_workflow_configuration {
+            # function declaration for generating custom JSON records
+            if ! $# -eq 5; then
+              echo "Error: Invalid amount of parameters (expected: <previous-json> <caling-workflow-id> <calling-workflow-name> <jdk-version> <environment-params>; was: $@)" 1>&2
+              exit 1
+            fi
 
-          # we have to set the default version here to handle the comma-separation properly for 
-          # the additional JDKs within the JSON
-          echo "Adds JDK 8 configuration as the default configuration."
-          configs_json=$configs_json'{"jdk-version": 8, "system-variables": ""}'
+            local record_sep
+            record_sep=""
+            if "$json" =~ .*calling-workflow-id.*; then
+              # there's already at least one entry which is why we have to set the separator
+              record_set=""
+            fi
 
-          declare -A other_configs
-          other_configs=( \
-              ["11"]="110" \
-              ["17"]="170" \
-              ["21"]="210" \
+            echo ${json}${record_sep}'{"calling-workflow-id": "'$1'", "calling-workflow-name": "'$2'", "jdk-version": "'$3'", "env-params": "'$4'"}'
+          }
+          
+          # initialize JSON version of matrix strategy
+          workflow_config_json='configs={"include":['
+
+          # dynamic JDK-specific configuration
+          # we want to allow dynamic selection of JDKs which is not supported by GHA for now
+          # (that is why we cannot use GHA's static matrix strategy declaration)
+          declare -A jdk_configs
+          jdk_configs=( \
+              ["8"]="" \
+              ["11"]="-Djdk11 -Pjava11-target" \
+              ["17"]="-Djdk11 -Djdk17 -Pjava17-target" \
+              ["21"]="-Djdk11 -Djdk17 -Djdk21 -Pjava21-target" \
           )
 
-          for jdk_version in "${!other_configs[@]}"; do
+          for jdk_version in "${!jdk_configs[@]}"; do
             if [[ "${{ inputs.supported-jdk-versions }}" =~ .*$jdk_version.* ]] || [[ "${{ github.event_name }}" == "schedule" ]]; then
               echo "Additional configuration for JDK ${jdk_version} added."
-              configs_json=$configs_json',{"jdk-version": '$jdk_version', "system-variables": "'${other_configs["$jdk_version"]}'"}'
+              workflow_config_json="$(add_workflow_configuration $workflow_config_json "java${jdk_version}" "Java ${jdk_version}" ${jdk_version} "${other_configs["$jdk_version"]}")"
             fi
           done
-          configs_json=$configs_json']}'
+          
+          # other workflow configurations
+          workflow_config_json="$(add_workflow_configuration $workflow_config_json "hadoop313" "Hadoop 3.1.3" 8 "-Dflink.hadoop.version=3.2.3 -Phadoop3-tests,hive3")"
+          workflow_config_json="$(add_workflow_configuration $workflow_config_json "adaptive-scheduler" "AdaptiveScheduler" 8 "-Penable-adaptive-scheduler")"
+          
+          # wrap things up
+          workflow_config_json=$workflow_config_json']}'
           
           echo $configs_json
 
           echo "$configs_json" >> $GITHUB_OUTPUT
-  jdk-workflows:
-    needs: configure-jdk-workflows
+  flink-workflows:
+    needs: generate-workflow-configs
     strategy:
       matrix: ${{ fromJSON(needs.configure-jdk-workflows.outputs.configs) }}
       fail-fast: false
-    name: "Java ${{ matrix.jdk-version }} (with Hadoop 2.10.2)"
+    name: "${{ matrix.calling-workflow-name }} (ID: ${{ matrix.calling-workflow-id }})"
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
     with:
       jdk-version: ${{ matrix.jdk-version }}
-      params: ${{ matrix.system-variables }}
+      params: "${{ matrix.env-params }}
