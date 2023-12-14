@@ -53,14 +53,14 @@ jobs:
         run: |
           function add_workflow_configuration {
             # function declaration for generating custom JSON records
-            if ! $# -eq 5; then
-              echo "Error: Invalid amount of parameters (expected: <previous-json> <caling-workflow-id> <calling-workflow-name> <jdk-version> <environment-params>; was: $@)" 1>&2
-              exit 1
+            if [[ ! $# -eq 5 ]]; then
+              echo "Error: Invalid amount of parameters (expected: <previous-json> <calling-workflow-id> <calling-workflow-name> <jdk-version> <environment-params>; was: $@)" 1>&2
+              return 1
             fi
 
             local record_sep
             record_sep=""
-            if "$json" =~ .*calling-workflow-id.*; then
+            if [[ "$json" =~ .*calling-workflow-id.* ]]; then
               # there's already at least one entry which is why we have to set the separator
               record_set=""
             fi
