@@ -108,4 +108,4 @@ jobs:
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
     with:
       jdk-version: ${{ matrix.jdk-version }}
-      params: "${{ matrix.env-params }}
+      params: ${{ matrix.env-params }}
