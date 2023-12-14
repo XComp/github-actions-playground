@@ -23,8 +23,8 @@ name: "Nightly (most-recent release)"
 on:
   workflow_dispatch:
     inputs:
-      supported-jdk-versions:
-        description: "The non-default JDK versions that shall be supported."
+      job-name-prefix:
+        description: "Job name prefix."
         type: string
         default: ""
 
@@ -36,4 +36,4 @@ jobs:
     uses: ./.github/workflows/test-matrix-strategy-composite.yaml
     with:
       branch: main
-      supported-jdk-versions: ${{ inputs.supported-jdk-versions }}
+      job-name-prefix: ${{ inputs.job-name-prefix }}

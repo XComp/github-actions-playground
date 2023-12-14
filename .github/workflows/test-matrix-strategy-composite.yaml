@@ -25,8 +25,9 @@ on:
         description: "The branch the extended CI run should be executed on."
         type: string
         required: true
-      supported-jdk-versions:
-        description: "The non-default JDK versions that shall be supported."
+      job-name-prefix:
+        description: "Job name prefix."
+        default: ""
         type: string
   workflow_dispatch:
     inputs:
@@ -74,6 +75,6 @@ jobs:
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
     with:
       calling-workflow-id: ${{ matrix.calling-workflow-id }}
-      calling-workflow-name: ${{ matrix.calling-workflow-name }}
+      calling-workflow-name: "${{ inputs.job-name-prefix }}${{ matrix.calling-workflow-name }}"
       jdk-version: ${{ matrix.jdk-version }}
       params: ${{ matrix.env-params }}
