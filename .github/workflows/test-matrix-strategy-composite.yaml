@@ -85,13 +85,13 @@ jobs:
           for jdk_version in "${!jdk_configs[@]}"; do
             if [[ "${{ inputs.supported-jdk-versions }}" =~ .*$jdk_version.* ]] || [[ "${{ github.event_name }}" == "schedule" ]]; then
               echo "Additional configuration for JDK ${jdk_version} added."
-              workflow_config_json="$(add_workflow_configuration $workflow_config_json "java${jdk_version}" "Java ${jdk_version}" ${jdk_version} "${other_configs["$jdk_version"]}")"
+              workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "java${jdk_version}" "Java ${jdk_version}" ${jdk_version} "${other_configs["$jdk_version"]}")"
             fi
           done
           
           # other workflow configurations
-          workflow_config_json="$(add_workflow_configuration $workflow_config_json "hadoop313" "Hadoop 3.1.3" 8 "-Dflink.hadoop.version=3.2.3 -Phadoop3-tests,hive3")"
-          workflow_config_json="$(add_workflow_configuration $workflow_config_json "adaptive-scheduler" "AdaptiveScheduler" 8 "-Penable-adaptive-scheduler")"
+          workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "hadoop313" "Hadoop 3.1.3" 8 "-Dflink.hadoop.version=3.2.3 -Phadoop3-tests,hive3")"
+          workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "adaptive-scheduler" "AdaptiveScheduler" 8 "-Penable-adaptive-scheduler")"
           
           # wrap things up
           workflow_config_json=$workflow_config_json']}'
