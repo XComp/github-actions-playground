@@ -51,54 +51,7 @@ jobs:
         id: generate-workflow-configs
         shell: bash
         run: |
-          function add_workflow_configuration {
-            # function declaration for generating custom JSON records
-            if [[ ! $# -eq 5 ]]; then
-              echo "Error: Invalid amount of parameters (expected: <previous-json> <calling-workflow-id> <calling-workflow-name> <jdk-version> <environment-params>; was: $@)" 1>&2
-              return 1
-            fi
-
-            local record_sep
-            record_sep=""
-            if [[ "$1" =~ .*calling-workflow-id.* ]]; then
-              # there's already at least one entry which is why we have to set the separator
-              record_sep=","
-            fi
-
-            echo ${1}${record_sep}'{"calling-workflow-id": "'$2'", "calling-workflow-name": "'$3'", "jdk-version": '$4', "env-params": "'$5'"}'
-          }
-          
-          # initialize JSON version of matrix strategy
-          workflow_config_json='configs={"include":['
-
-          # dynamic JDK-specific configuration
-          # we want to allow dynamic selection of JDKs which is not supported by GHA for now
-          # (that is why we cannot use GHA's static matrix strategy declaration)
-          declare -A jdk_configs
-          jdk_configs=( \
-              ["8"]="" \
-              ["11"]="-Djdk11 -Pjava11-target" \
-              ["17"]="-Djdk11 -Djdk17 -Pjava17-target" \
-              ["21"]="-Djdk11 -Djdk17 -Djdk21 -Pjava21-target" \
-          )
-
-          for jdk_version in "${!jdk_configs[@]}"; do
-            if [[ "${{ inputs.supported-jdk-versions }}" =~ .*$jdk_version.* ]] || [[ "${{ github.event_name }}" == "schedule" ]]; then
-              echo "Additional configuration for JDK ${jdk_version} added."
-              workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "java${jdk_version}" "Java ${jdk_version}" ${jdk_version} "${jdk_configs["$jdk_version"]}")"
-            fi
-          done
-          
-          # other workflow configurations
-          workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "hadoop313" "Hadoop 3.1.3" 8 "-Dflink.hadoop.version=3.2.3 -Phadoop3-tests,hive3")"
-          workflow_config_json="$(add_workflow_configuration "$workflow_config_json" "adaptive-scheduler" "AdaptiveScheduler" 8 "-Penable-adaptive-scheduler")"
-          
-          # wrap things up
-          workflow_config_json=$workflow_config_json']}'
-          
-          echo $workflow_config_json
-
-          echo "$workflow_config_json" >> $GITHUB_OUTPUT
+          echo "configs=$(cat .github/workflows/flink-workflow-config.default.json)" >> $GITHUB_OUTPUT
   flink-workflows:
     needs: generate-workflow-configs
     strategy:
