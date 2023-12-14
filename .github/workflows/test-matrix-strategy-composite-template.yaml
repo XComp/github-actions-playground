@@ -35,6 +35,5 @@ jobs:
       - name: "Prints params"
         id: workflow-prep-step
         run: |
-          echo "Sleep for ${{ inputs.params }}s"
-          sleep ${{ inputs.params }}
-          exit 1
+          echo "JDK version: ${{ inputs.jdk-version }}"
+          echo "Params: ${{ inputs.params }}"
