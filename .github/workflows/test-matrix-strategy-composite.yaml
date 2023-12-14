@@ -62,9 +62,9 @@ jobs:
 
           declare -A other_configs
           other_configs=( \
-              ["11"]="-Djdk11 -Pjava11-target" \
-              ["17"]="-Djdk11 -Djdk17 -Pjava17-target" \
-              ["21"]="-Djdk11 -Djdk17 -Djdk21 -Pjava21-target" \
+              ["11"]="110" \
+              ["17"]="170" \
+              ["21"]="210" \
           )
 
           for jdk_version in "${!other_configs[@]}"; do

@@ -35,4 +35,6 @@ jobs:
       - name: "Prints params"
         id: workflow-prep-step
         run: |
-          echo ${{ inputs.params }}
+          echo "Sleep for ${{ inputs.params }}s"
+          sleep ${{ inputs.params }}
+          exit 1
