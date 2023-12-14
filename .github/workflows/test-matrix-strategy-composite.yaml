@@ -60,5 +60,7 @@ jobs:
     name: "${{ matrix.calling-workflow-name }} (ID: ${{ matrix.calling-workflow-id }})"
     uses: ./.github/workflows/test-matrix-strategy-composite-template.yaml
     with:
+      calling-workflow-id: ${{ matrix.calling-workflow-id }}
+      calling-workflow-name: ${{ matrix.calling-workflow-name }}
       jdk-version: ${{ matrix.jdk-version }}
       params: ${{ matrix.env-params }}

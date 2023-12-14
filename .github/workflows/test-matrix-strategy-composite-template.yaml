@@ -20,6 +20,8 @@ name: "Apache Flink Test Workflow Template"
 on:
   workflow_call:
     inputs:
+      calling-workflow-id:
+      calling-workflow-name:
       jdk-version:
         description: "The Java version to use."
         type: number
@@ -29,7 +31,7 @@ on:
 
 jobs:
   print:
-    name: "Prints variables for JDK ${{ inputs.jdk-version }}"
+    name: "${{ inputs.calling-workflow-name }} (${{ inputs.calling-workflow-id }})"
     runs-on: ubuntu-latest
     steps:
       - name: "Prints params"
