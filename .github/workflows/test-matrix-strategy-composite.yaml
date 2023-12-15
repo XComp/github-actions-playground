@@ -48,6 +48,8 @@ jobs:
     outputs:
       configs: ${{ steps.generate-workflow-configs.outputs.configs }}
     steps:
+      - name: "Print event"
+        run: echo "${{ github.event_name }}"
       - name: "Flink Checkout"
         uses: actions/checkout@v3
         with:
