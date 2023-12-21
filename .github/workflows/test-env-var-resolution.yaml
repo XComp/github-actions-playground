@@ -13,7 +13,7 @@ jobs:
       - name: "Initialize env variables"
         shell: bash
         run: |
-          export BAR2_TAG="${{ env.FOO_TAG }}bar"
+          echo "BAR2_TAG=${{ env.FOO_TAG }}bar" >> $GITHUB_ENV
       - name: "Print env variables"
         shell: bash
         run: |
