@@ -1,4 +1,4 @@
-name: "The workflow for setting the environment variable"
+name: "Env variable resolution"
 
 on:
   workflow_dispatch:
@@ -10,14 +10,12 @@ jobs:
   test-workflow:
     runs-on: ubuntu-latest
     env:
-      BAR1_TAG: "${{ env.FOO_TAG }}bar"
       BAR2_TAG: "${{ FOO_TAG }}bar"
       BAR3_TAG: "${FOO_TAG}bar"
     steps:
       - name: "Print env variables"
         shell: bash
         run: |
-          echo "$BAR1_TAG"
           echo "$BAR2_TAG"
           echo "$BAR3_TAG"
           echo "$FOO_TAG"
