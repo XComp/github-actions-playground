@@ -9,13 +9,13 @@ env:
 jobs:
   test-workflow:
     runs-on: ubuntu-latest
-    env:
-      BAR2_TAG: "${{ FOO_TAG }}bar"
-      BAR3_TAG: "${FOO_TAG}bar"
     steps:
+      - name: "Initialize env variables"
+        shell: bash
+        run: |
+          export BAR2_TAG="${{ env.FOO_TAG }}bar"
       - name: "Print env variables"
         shell: bash
         run: |
           echo "$BAR2_TAG"
-          echo "$BAR3_TAG"
           echo "$FOO_TAG"
