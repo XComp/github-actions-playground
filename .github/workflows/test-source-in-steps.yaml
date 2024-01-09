@@ -16,8 +16,11 @@ jobs:
           
           foo
           echo $FOOBAR_VAR
-      - name: "Check whether utils are still accessible"
+      - name: "Executes foo a 2nd time"
         shell: bash
         run: |
           foo
+      - name: "Prints FOOBAR_VAR a 2nd time"
+        shell: bash
+        run: |
           echo $FOOBAR_VAR
