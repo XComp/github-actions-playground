@@ -1,0 +1,21 @@
+name: "Tests comments in command"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Code Checkout"
+        uses: actions/checkout@v3
+      - name: "Source utils"
+        run: |
+          source ./.github/scripts/test-utils.sh
+          
+          foobar
+          echo $FOOBAR_VAR
+      - name: "Check whether utils are still accessible"
+        run: |
+          foobar
+          echo $FOOBAR_VAR
