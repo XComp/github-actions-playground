@@ -1,4 +1,4 @@
-name: "Tests comments in command"
+name: "Tests env sharing between steps"
 
 on:
   workflow_dispatch:
@@ -10,12 +10,14 @@ jobs:
       - name: "Code Checkout"
         uses: actions/checkout@v3
       - name: "Source utils"
+        shell: bash
         run: |
           source ./.github/scripts/test-utils.sh
           
-          foobar
+          foo
           echo $FOOBAR_VAR
       - name: "Check whether utils are still accessible"
+        shell: bash
         run: |
-          foobar
+          foo
           echo $FOOBAR_VAR
