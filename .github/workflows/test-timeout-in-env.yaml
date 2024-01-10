@@ -3,10 +3,11 @@ name: "Tests timeout in env"
 on:
   workflow_dispatch:
 
+env:
+  to: 1
+
 jobs:
   test-workflow:
-    env:
-      to: 1
     timeout-minutes: ${{ fromJSON(env.to) }}
     runs-on: ubuntu-latest
     steps:
