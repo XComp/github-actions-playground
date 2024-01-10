@@ -12,7 +12,7 @@ jobs:
       - name: "Source utils"
         timeout-minutes: ${{ fromJSON(env.to) }}
         shell: bash
-        run: sleep 60
+        run: sleep 70
 
       - name: "Step check"
         shell: bash
