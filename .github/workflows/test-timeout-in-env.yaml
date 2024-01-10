@@ -8,10 +8,10 @@ env:
 
 jobs:
   test-workflow:
-    timeout-minutes: ${{ fromJSON(env.to) }}
     runs-on: ubuntu-latest
     steps:
       - name: "Source utils"
+        timeout-minutes: ${{ fromJSON(env.to) }}
         shell: bash
         run: sleep 60
 
