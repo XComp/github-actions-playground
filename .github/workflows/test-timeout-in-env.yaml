@@ -1,0 +1,20 @@
+name: "Tests timeout in env"
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-workflow:
+    env:
+      to: 1
+    timeout-minutes: ${{ fromJSON(env.to) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Source utils"
+        shell: bash
+        run: sleep 60
+
+      - name: "Step check"
+        shell: bash
+        run: |
+          echo "This should have run"
